@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tool Aura – Project Documentation</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      font-size: 13px;
+      color: #1e293b;
+      background: #fff;
+      line-height: 1.7;
+    }
+
+    /* ── Cover Page ── */
+    .cover {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a78bfa 100%);
+      color: white;
+      text-align: center;
+      padding: 40px;
+      page-break-after: always;
+    }
+    .cover .logo { font-size: 72px; margin-bottom: 20px; }
+    .cover h1 { font-size: 48px; font-weight: 800; letter-spacing: -1px; }
+    .cover .subtitle { font-size: 20px; opacity: 0.9; margin-top: 10px; }
+    .cover .divider { width: 80px; height: 4px; background: rgba(255,255,255,0.5); margin: 30px auto; border-radius: 2px; }
+    .cover .meta { font-size: 15px; opacity: 0.85; line-height: 2; }
+    .cover .meta strong { opacity: 1; }
+    .cover .badge {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 8px 24px;
+      border: 2px solid rgba(255,255,255,0.6);
+      border-radius: 50px;
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* ── Page Layout ── */
+    .page { padding: 50px 60px; max-width: 900px; margin: 0 auto; }
+    .page-break { page-break-before: always; }
+
+    /* ── Headings ── */
+    h1.section-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: #6366f1;
+      border-bottom: 3px solid #6366f1;
+      padding-bottom: 10px;
+      margin-bottom: 24px;
+      margin-top: 10px;
+    }
+    h2.sub-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #374151;
+      margin: 24px 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    h2.sub-title::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 18px;
+      background: #6366f1;
+      border-radius: 2px;
+    }
+    h3 { font-size: 14px; font-weight: 700; color: #4b5563; margin: 16px 0 6px; }
+
+    /* ── TOC ── */
+    .toc { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 28px 36px; margin-bottom: 30px; }
+    .toc h2 { font-size: 18px; margin-bottom: 16px; color: #6366f1; border: none; }
+    .toc ol { padding-left: 20px; }
+    .toc li { margin: 7px 0; color: #374151; }
+    .toc li a { color: #6366f1; text-decoration: none; }
+
+    /* ── Info Boxes ── */
+    .info-box {
+      background: #f0f4ff;
+      border-left: 4px solid #6366f1;
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      margin: 16px 0;
+      font-size: 13px;
+    }
+    .success-box {
+      background: #f0fdf4;
+      border-left: 4px solid #22c55e;
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      margin: 16px 0;
+    }
+    .warning-box {
+      background: #fffbeb;
+      border-left: 4px solid #f59e0b;
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      margin: 16px 0;
+    }
+
+    /* ── Tables ── */
+    table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 12.5px; }
+    th { background: #6366f1; color: white; padding: 10px 14px; text-align: left; font-weight: 600; }
+    td { padding: 9px 14px; border-bottom: 1px solid #e5e7eb; vertical-align: top; }
+    tr:nth-child(even) td { background: #f9fafb; }
+    tr:hover td { background: #f0f4ff; }
+
+    /* ── Code blocks ── */
+    pre {
+      background: #1e293b;
+      color: #e2e8f0;
+      padding: 16px 20px;
+      border-radius: 8px;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      overflow-x: auto;
+      margin: 12px 0;
+      line-height: 1.6;
+    }
+    code {
+      background: #f1f5f9;
+      color: #6366f1;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+    }
+    pre code { background: none; color: inherit; padding: 0; }
+
+    /* ── Tech Stack Pills ── */
+    .tech-grid { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0; }
+    .tech-pill {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: #f0f4ff;
+      border: 1px solid #c7d2fe;
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #4338ca;
+    }
+
+    /* ── Feature List ── */
+    .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+    .feature-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+    .feature-card .icon { font-size: 20px; margin-bottom: 6px; }
+    .feature-card h4 { font-size: 13px; font-weight: 700; color: #374151; margin-bottom: 4px; }
+    .feature-card p { font-size: 12px; color: #6b7280; }
+
+    /* ── API Endpoint badges ── */
+    .method { 
+      display: inline-block; 
+      padding: 2px 8px; 
+      border-radius: 4px; 
+      font-size: 11px; 
+      font-weight: 700; 
+      font-family: monospace;
+    }
+    .get    { background: #dcfce7; color: #166534; }
+    .post   { background: #dbeafe; color: #1e40af; }
+    .patch  { background: #fef9c3; color: #854d0e; }
+    .delete { background: #fee2e2; color: #991b1b; }
+
+    /* ── Architecture Diagram ── */
+    .arch-diagram {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 24px;
+      text-align: center;
+      margin: 16px 0;
+    }
+    .arch-row { display: flex; justify-content: center; align-items: center; gap: 16px; margin: 10px 0; }
+    .arch-box {
+      border-radius: 8px;
+      padding: 12px 20px;
+      font-size: 12px;
+      font-weight: 600;
+      min-width: 130px;
+      text-align: center;
+    }
+    .arch-arrow { font-size: 20px; color: #94a3b8; }
+    .box-blue   { background: #dbeafe; color: #1e40af; border: 2px solid #93c5fd; }
+    .box-purple { background: #ede9fe; color: #6d28d9; border: 2px solid #c4b5fd; }
+    .box-green  { background: #dcfce7; color: #166534; border: 2px solid #86efac; }
+    .box-orange { background: #ffedd5; color: #c2410c; border: 2px solid #fed7aa; }
+
+    /* ── URLs ── */
+    .url-box {
+      background: #1e293b;
+      color: #a5f3fc;
+      padding: 12px 18px;
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 13px;
+      margin: 8px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      color: #94a3b8;
+      font-size: 11px;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    /* ── Print styles ── */
+    @media print {
+      body { font-size: 12px; }
+      .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .tech-pill, .feature-card, .arch-box, pre, th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .page { padding: 30px 40px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════ COVER PAGE ══════════════════ -->
+<div class="cover">
+  <div class="logo">✨</div>
+  <h1>Tool Aura</h1>
+  <div class="subtitle">AI Tools Discovery Platform</div>
+  <div class="divider"></div>
+  <div class="meta">
+    <strong>Project Type:</strong> Full-Stack Web Application (MERN Stack)<br/>
+    <strong>Developed By:</strong> Ajay A (allamajay04@gmail.com)<br/>
+    <strong>Tech Stack:</strong> MongoDB · Express · React · Node.js<br/>
+    <strong>Deployment:</strong> Firebase Hosting + Railway + MongoDB Atlas<br/>
+    <strong>Live URL:</strong> https://tools-aura-04.web.app<br/>
+    <strong>Date:</strong> November 2026
+  </div>
+  <div class="badge">Internship Portfolio Project</div>
+</div>
+
+<!-- ══════════════════ TABLE OF CONTENTS ══════════════════ -->
+<div class="page">
+  <h1 class="section-title">📋 Table of Contents</h1>
+  <div class="toc">
+    <ol>
+      <li>Project Overview</li>
+      <li>Objectives & Goals</li>
+      <li>Technology Stack</li>
+      <li>System Architecture</li>
+      <li>Key Features</li>
+      <li>Project Structure</li>
+      <li>Database Design</li>
+      <li>API Documentation</li>
+      <li>User Roles & Access Control</li>
+      <li>Frontend Pages</li>
+      <li>Deployment Details</li>
+      <li>Setup & Installation Guide</li>
+      <li>Test Credentials</li>
+      <li>Future Enhancements</li>
+      <li>Conclusion</li>
+    </ol>
+  </div>
+
+  <!-- ══ 1. Project Overview ══ -->
+  <h1 class="section-title">1. Project Overview</h1>
+  <p>
+    <strong>Tool Aura</strong> is a full-stack AI Tools Discovery Platform built using the MERN stack 
+    (MongoDB, Express.js, React.js, Node.js). It serves as a curated directory where users can 
+    browse, search, and explore AI tools across various categories such as Writing, Coding, Image 
+    Generation, Video, and more.
+  </p>
+  <br/>
+  <p>
+    The platform supports two distinct roles — <strong>Admin</strong> and <strong>Regular User</strong> — 
+    with a complete content moderation workflow. Users can submit new AI tools which go through an 
+    admin approval process before appearing in the public directory.
+  </p>
+
+  <div class="info-box">
+    🌐 <strong>Live Application:</strong> <a href="https://tools-aura-04.web.app">https://tools-aura-04.web.app</a>
+    &nbsp;|&nbsp;
+    ⚙️ <strong>Backend API:</strong> <a href="https://tool-aura-backend-production.up.railway.app">https://tool-aura-backend-production.up.railway.app</a>
+  </div>
+
+  <!-- ══ 2. Objectives ══ -->
+  <h1 class="section-title" style="margin-top:36px;">2. Objectives & Goals</h1>
+  <table>
+    <tr><th>#</th><th>Objective</th><th>Status</th></tr>
+    <tr><td>1</td><td>Build a full-stack MERN application from scratch</td><td>✅ Completed</td></tr>
+    <tr><td>2</td><td>Implement JWT-based authentication and authorization</td><td>✅ Completed</td></tr>
+    <tr><td>3</td><td>Create Role-Based Access Control (Admin / User)</td><td>✅ Completed</td></tr>
+    <tr><td>4</td><td>Build RESTful API with Express.js</td><td>✅ Completed</td></tr>
+    <tr><td>5</td><td>Design a responsive UI with React + Bootstrap</td><td>✅ Completed</td></tr>
+    <tr><td>6</td><td>Implement search, filter, and pagination</td><td>✅ Completed</td></tr>
+    <tr><td>7</td><td>Tool submission and admin moderation workflow</td><td>✅ Completed</td></tr>
+    <tr><td>8</td><td>Favourites system for logged-in users</td><td>✅ Completed</td></tr>
+    <tr><td>9</td><td>Deploy frontend to Firebase Hosting</td><td>✅ Completed</td></tr>
+    <tr><td>10</td><td>Deploy backend to Railway with MongoDB Atlas</td><td>✅ Completed</td></tr>
+  </table>
+</div>
+
+<!-- ══════════════════ PAGE 2 ══════════════════ -->
+<div class="page page-break">
+
+  <!-- ══ 3. Technology Stack ══ -->
+  <h1 class="section-title">3. Technology Stack</h1>
+
+  <h2 class="sub-title">Frontend</h2>
+  <div class="tech-grid">
+    <div class="tech-pill">⚛️ React.js 18</div>
+    <div class="tech-pill">⚡ Vite</div>
+    <div class="tech-pill">🔄 Redux Toolkit</div>
+    <div class="tech-pill">🎨 Bootstrap 5</div>
+    <div class="tech-pill">🧭 React Router v6</div>
+    <div class="tech-pill">🌐 Axios</div>
+  </div>
+
+  <h2 class="sub-title">Backend</h2>
+  <div class="tech-grid">
+    <div class="tech-pill">🟩 Node.js</div>
+    <div class="tech-pill">🚂 Express.js</div>
+    <div class="tech-pill">🍃 Mongoose</div>
+    <div class="tech-pill">🔐 JWT (jsonwebtoken)</div>
+    <div class="tech-pill">🔒 bcryptjs</div>
+    <div class="tech-pill">🌍 cors</div>
+    <div class="tech-pill">⚙️ dotenv</div>
+  </div>
+
+  <h2 class="sub-title">Database & Deployment</h2>
+  <div class="tech-grid">
+    <div class="tech-pill">🍃 MongoDB Atlas</div>
+    <div class="tech-pill">🔥 Firebase Hosting</div>
+    <div class="tech-pill">🚄 Railway.app</div>
+    <div class="tech-pill">☁️ AWS Mumbai (ap-south-1)</div>
+  </div>
+
+  <!-- ══ 4. System Architecture ══ -->
+  <h1 class="section-title" style="margin-top:36px;">4. System Architecture</h1>
+  <div class="arch-diagram">
+    <div class="arch-row">
+      <div class="arch-box box-blue">👤 User / Browser</div>
+    </div>
+    <div class="arch-row">
+      <div class="arch-arrow">↓ HTTPS</div>
+    </div>
+    <div class="arch-row">
+      <div class="arch-box box-orange">🔥 Firebase Hosting<br/><small>React SPA (CDN)</small></div>
+    </div>
+    <div class="arch-row">
+      <div class="arch-arrow">↓ API Calls (Axios)</div>
+    </div>
+    <div class="arch-row">
+      <div class="arch-box box-purple">🚄 Railway.app<br/><small>Express REST API</small></div>
+    </div>
+    <div class="arch-row">
+      <div class="arch-arrow">↓ Mongoose ODM</div>
+    </div>
+    <div class="arch-row">
+      <div class="arch-box box-green">🍃 MongoDB Atlas<br/><small>Cloud Database (Mumbai)</small></div>
+    </div>
+  </div>
+
+  <table>
+    <tr><th>Layer</th><th>Technology</th><th>Responsibility</th></tr>
+    <tr><td>Presentation</td><td>React + Bootstrap + Redux</td><td>UI rendering, state management, routing</td></tr>
+    <tr><td>API Layer</td><td>Express.js + Node.js</td><td>REST API, authentication, business logic</td></tr>
+    <tr><td>Data Layer</td><td>MongoDB + Mongoose</td><td>Data persistence, schema validation</td></tr>
+    <tr><td>Auth</td><td>JWT + bcryptjs</td><td>Token-based auth, password hashing</td></tr>
+    <tr><td>Hosting (FE)</td><td>Firebase Hosting</td><td>Static file serving via global CDN</td></tr>
+    <tr><td>Hosting (BE)</td><td>Railway.app</td><td>Node.js runtime, auto-scaling</td></tr>
+  </table>
+</div>
+
+<!-- ══════════════════ PAGE 3 ══════════════════ -->
+<div class="page page-break">
+
+  <!-- ══ 5. Key Features ══ -->
+  <h1 class="section-title">5. Key Features</h1>
+
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="icon">🔍</div>
+      <h4>Search & Filter</h4>
+      <p>Real-time search by tool name/description + category filter with URL query params</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🔐</div>
+      <h4>JWT Authentication</h4>
+      <p>Secure login/register with JWT tokens stored in localStorage. Auto-attached to every API request.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🛡️</div>
+      <h4>Role-Based Access</h4>
+      <p>Admin and User roles with protected routes. Admins get a full dashboard; users get personal pages.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">📥</div>
+      <h4>Tool Submission & Moderation</h4>
+      <p>Users submit tools → pending status → admin approves/rejects → appears in directory.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">❤️</div>
+      <h4>Favourites System</h4>
+      <p>Logged-in users can save any tool to their favourites list and manage it from their dashboard.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">📊</div>
+      <h4>Admin Dashboard</h4>
+      <p>Stats overview, manage all tools (CRUD), review submissions, manage users & categories.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">📄</div>
+      <h4>Pagination</h4>
+      <p>Server-side pagination on tool listings. 12 tools per page with page navigation.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">📱</div>
+      <h4>Responsive Design</h4>
+      <p>Mobile-first Bootstrap 5 layout. Works on phones, tablets, and desktops.</p>
+    </div>
+  </div>
+
+  <!-- ══ 6. Project Structure ══ -->
+  <h1 class="section-title" style="margin-top:30px;">6. Project Structure</h1>
+  <pre>
+ai tools/
+├── backend/                    ← Express.js API Server
+│   ├── config/
+│   │   └── db.js               ← MongoDB connection
+│   ├── controllers/
+│   │   ├── authController.js   ← Login, Register, GetMe
+│   │   ├── toolController.js   ← Browse & submit tools
+│   │   ├── userController.js   ← Favourites, profile
+│   │   ├── adminController.js  ← Admin CRUD operations
+│   │   └── categoryController.js
+│   ├── middleware/
+│   │   ├── authMiddleware.js   ← JWT verification
+│   │   ├── adminMiddleware.js  ← Admin-only guard
+│   │   └── errorMiddleware.js  ← Global error handler
+│   ├── models/
+│   │   ├── User.js             ← User schema + bcrypt hook
+│   │   ├── Tool.js             ← Tool schema + slug gen
+│   │   └── Category.js        ← Category schema
+│   ├── routes/
+│   │   ├── authRoutes.js
+│   │   ├── toolRoutes.js
+│   │   ├── userRoutes.js
+│   │   ├── adminRoutes.js
+│   │   └── categoryRoutes.js
+│   ├── app.js                  ← Express app (no listen)
+│   ├── server.js               ← Local dev entry point
+│   ├── index.js                ← Firebase Functions entry
+│   ├── seeder.js               ← Database seeder
+│   └── .env                    ← Environment variables
+│
+├── frontend/                   ← React + Vite SPA
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Navbar.jsx
+│   │   │   ├── Footer.jsx
+│   │   │   ├── ToolCard.jsx
+│   │   │   ├── ProtectedRoute.jsx
+│   │   │   └── AdminSidebar.jsx
+│   │   ├── pages/
+│   │   │   ├── HomePage.jsx
+│   │   │   ├── BrowseToolsPage.jsx
+│   │   │   ├── ToolDetailsPage.jsx
+│   │   │   ├── LoginPage.jsx
+│   │   │   ├── RegisterPage.jsx
+│   │   │   ├── UserDashboardPage.jsx
+│   │   │   ├── SubmitToolPage.jsx
+│   │   │   ├── FavouritesPage.jsx
+│   │   │   ├── AdminDashboardPage.jsx
+│   │   │   ├── AdminManageToolsPage.jsx
+│   │   │   └── AdminUsersPage.jsx
+│   │   ├── slices/
+│   │   │   ├── authSlice.js
+│   │   │   └── toolSlice.js
+│   │   ├── services/
+│   │   │   ├── api.js          ← Axios instance
+│   │   │   ├── authService.js
+│   │   │   └── toolService.js
+│   │   ├── store/index.js      ← Redux store
+│   │   └── App.jsx             ← All routes defined here
+│   ├── .env                    ← VITE_API_URL (dev)
+│   └── .env.production         ← VITE_API_URL (prod)
+│
+├── firebase.json               ← Firebase Hosting config
+└── .firebaserc                 ← Firebase project binding</pre>
+</div>
+
+<!-- ══════════════════ PAGE 4 ══════════════════ -->
+<div class="page page-break">
+
+  <!-- ══ 7. Database Design ══ -->
+  <h1 class="section-title">7. Database Design</h1>
+
+  <h2 class="sub-title">User Collection</h2>
+  <table>
+    <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+    <tr><td><code>_id</code></td><td>ObjectId</td><td>Auto-generated MongoDB ID</td></tr>
+    <tr><td><code>name</code></td><td>String</td><td>Full name (required)</td></tr>
+    <tr><td><code>email</code></td><td>String</td><td>Unique email address</td></tr>
+    <tr><td><code>password</code></td><td>String</td><td>Bcrypt hashed (10 salt rounds)</td></tr>
+    <tr><td><code>role</code></td><td>String</td><td>'user' or 'admin' (default: 'user')</td></tr>
+    <tr><td><code>isActive</code></td><td>Boolean</td><td>Account status (default: true)</td></tr>
+    <tr><td><code>favourites</code></td><td>[ObjectId]</td><td>Ref to Tool collection</td></tr>
+    <tr><td><code>createdAt</code></td><td>Date</td><td>Auto-timestamp</td></tr>
+  </table>
+
+  <h2 class="sub-title">Tool Collection</h2>
+  <table>
+    <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+    <tr><td><code>_id</code></td><td>ObjectId</td><td>Auto-generated MongoDB ID</td></tr>
+    <tr><td><code>name</code></td><td>String</td><td>Tool name (required)</td></tr>
+    <tr><td><code>slug</code></td><td>String</td><td>URL-friendly name (auto-generated)</td></tr>
+    <tr><td><code>description</code></td><td>String</td><td>Tool description (required)</td></tr>
+    <tr><td><code>category</code></td><td>ObjectId</td><td>Ref to Category collection</td></tr>
+    <tr><td><code>websiteUrl</code></td><td>String</td><td>External tool URL</td></tr>
+    <tr><td><code>logoUrl</code></td><td>String</td><td>Tool logo image URL</td></tr>
+    <tr><td><code>status</code></td><td>String</td><td>'pending', 'approved', 'rejected'</td></tr>
+    <tr><td><code>isFeatured</code></td><td>Boolean</td><td>Featured on homepage</td></tr>
+    <tr><td><code>submittedBy</code></td><td>ObjectId</td><td>Ref to User collection</td></tr>
+    <tr><td><code>createdAt</code></td><td>Date</td><td>Auto-timestamp</td></tr>
+  </table>
+
+  <h2 class="sub-title">Category Collection</h2>
+  <table>
+    <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+    <tr><td><code>_id</code></td><td>ObjectId</td><td>Auto-generated MongoDB ID</td></tr>
+    <tr><td><code>name</code></td><td>String</td><td>Category name (e.g., "Writing & Productivity")</td></tr>
+    <tr><td><code>slug</code></td><td>String</td><td>URL slug (e.g., "writing-productivity")</td></tr>
+    <tr><td><code>description</code></td><td>String</td><td>Category description</td></tr>
+    <tr><td><code>createdAt</code></td><td>Date</td><td>Auto-timestamp</td></tr>
+  </table>
+
+  <h2 class="sub-title">Seeded Data</h2>
+  <div class="success-box">
+    ✅ <strong>8 Categories</strong> seeded: Writing & Productivity, Coding & Development, Image Generation, 
+    Video Generation, Audio & Music, Research & Analysis, Marketing & SEO, Business & Productivity<br/><br/>
+    ✅ <strong>15 AI Tools</strong> seeded: ChatGPT, GitHub Copilot, Midjourney, DALL·E 3, Jasper AI, 
+    Grammarly, Runway, Synthesia, ElevenLabs, Perplexity AI, Notion AI, Copy.ai, Otter.ai, Lumen5, Pika Labs<br/><br/>
+    ✅ <strong>2 User Accounts</strong> seeded: Admin + Regular User
+  </div>
+</div>
+
+<!-- ══════════════════ PAGE 5 ══════════════════ -->
+<div class="page page-break">
+
+  <!-- ══ 8. API Documentation ══ -->
+  <h1 class="section-title">8. API Documentation</h1>
+  <p>Base URL: <code>https://tool-aura-backend-production.up.railway.app/api</code></p>
+
+  <h2 class="sub-title">Auth Routes <code>/api/auth</code></h2>
+  <table>
+    <tr><th>Method</th><th>Endpoint</th><th>Access</th><th>Description</th></tr>
+    <tr>
+      <td><span class="method post">POST</span></td>
+      <td><code>/auth/register</code></td><td>Public</td>
+      <td>Register new user. Body: name, email, password</td>
+    </tr>
+    <tr>
+      <td><span class="method post">POST</span></td>
+      <td><code>/auth/login</code></td><td>Public</td>
+      <td>Login user. Returns JWT token. Body: email, password</td>
+    </tr>
+    <tr>
+      <td><span class="method get">GET</span></td>
+      <td><code>/auth/me</code></td><td>🔒 Auth</td>
+      <td>Get current logged-in user profile</td>
+    </tr>
+  </table>
+
+  <h2 class="sub-title">Tool Routes <code>/api/tools</code></h2>
+  <table>
+    <tr><th>Method</th><th>Endpoint</th><th>Access</th><th>Description</th></tr>
+    <tr>
+      <td><span class="method get">GET</span></td>
+      <td><code>/tools</code></td><td>Public</td>
+      <td>Get approved tools. Query: search, category, page, limit</td>
+    </tr>
+    <tr>
+      <td><span class="method get">GET</span></td>
+      <td><code>/tools/:id</code></td><td>Public</td>
+      <td>Get single approved tool by MongoDB ID</td>
+    </tr>
+    <tr>
+      <td><span class="method post">POST</span></td>
+      <td><code>/tools/submit</code></td><td>🔒 Auth</td>
+      <td>Submit new tool for review. Body: name, description, category, websiteUrl</td>
+    </tr>
+  </table>
+
+  <h2 class="sub-title">User Routes <code>/api/users</code></h2>
+  <table>
+    <tr><th>Method</th><th>Endpoint</th><th>Access</th><th>Description</th></tr>
+    <tr>
+      <td><span class="method get">GET</span></td>
+      <td><code>/users/my-submissions</code></td><td>🔒 Auth</td>
+      <td>Get tools submitted by the logged-in user</td>
+    </tr>
+    <tr>
+      <td><span class="method get">GET</span></td>
+      <td><code>/users/favourites</code></td><td>🔒 Auth</td>
+      <td>Get user's favourite tools list</td>
+    </tr>
+    <tr>
+      <td><span class="method post">POST</span></td>
+      <td><code>/users/favourites/:id</code></td><td>🔒 Auth</td>
+      <td>Add a tool to favourites</td>
+    </tr>
+    <tr>
+      <td><span class="method delete">DELETE</span></td>
+      <td><code>/users/favourites/:id</code></td><td>🔒 Auth</td>
+      <td>Remove a tool from favourites</td>
+    </tr>
+  </table>
+
+  <h2 class="sub-title">Admin Routes <code>/api/admin</code></h2>
+  <table>
+    <tr><th>Method</th><th>Endpoint</th><th>Access</th><th>Description</th></tr>
+    <tr>
+      <td><span class="method get">GET</span></td>
+      <td><code>/admin/dashboard</code></td><td>🛡️ Admin</td>
+      <td>Dashboard stats: total tools, users, pending count</td>
+    </tr>
+    <tr>
+      <td><span class="method get">GET</span></td>
+      <td><code>/admin/submissions</code></td><td>🛡️ Admin</td>
+      <td>Get all pending tool submissions</td>
+    </tr>
+    <tr>
+      <td><span class="method patch">PATCH</span></td>
+      <td><code>/admin/submissions/:id/status</code></td><td>🛡️ Admin</td>
+      <td>Approve or reject a submitted tool</td>
+    </tr>
+    <tr>
+      <td><span class="method get">GET</span></td>
+      <td><code>/admin/tools</code></td><td>🛡️ Admin</td>
+      <td>Get all tools (all statuses)</td>
+    </tr>
+    <tr>
+      <td><span class="method post">POST</span></td>
+      <td><code>/admin/tools</code></td><td>🛡️ Admin</td>
+      <td>Add a tool directly (auto-approved)</td>
+    </tr>
+    <tr>
+      <td><span class="method patch">PATCH</span></td>
+      <td><code>/admin/tools/:id</code></td><td>🛡️ Admin</td>
+      <td>Update tool details</td>
+    </tr>
+    <tr>
+      <td><span class="method delete">DELETE</span></td>
+      <td><code>/admin/tools/:id</code></td><td>🛡️ Admin</td>
+      <td>Delete a tool permanently</td>
+    </tr>
+    <tr>
+      <td><span class="method get">GET</span></td>
+      <td><code>/admin/users</code></td><td>🛡️ Admin</td>
+      <td>Get all registered users</td>
+    </tr>
+    <tr>
+      <td><span class="method patch">PATCH</span></td>
+      <td><code>/admin/users/:id/toggle</code></td><td>🛡️ Admin</td>
+      <td>Activate / deactivate a user account</td>
+    </tr>
+  </table>
+
+  <h2 class="sub-title">Category Routes <code>/api/categories</code></h2>
+  <table>
+    <tr><th>Method</th><th>Endpoint</th><th>Access</th><th>Description</th></tr>
+    <tr><td><span class="method get">GET</span></td><td><code>/categories</code></td><td>Public</td><td>Get all categories</td></tr>
+    <tr><td><span class="method post">POST</span></td><td><code>/categories</code></td><td>🛡️ Admin</td><td>Create new category</td></tr>
+    <tr><td><span class="method patch">PATCH</span></td><td><code>/categories/:id</code></td><td>🛡️ Admin</td><td>Update category</td></tr>
+    <tr><td><span class="method delete">DELETE</span></td><td><code>/categories/:id</code></td><td>🛡️ Admin</td><td>Delete category</td></tr>
+  </table>
+</div>
+
+<!-- ══════════════════ PAGE 6 ══════════════════ -->
+<div class="page page-break">
+
+  <!-- ══ 9. User Roles & Access Control ══ -->
+  <h1 class="section-title">9. User Roles & Access Control</h1>
+  <table>
+    <tr><th>Feature / Page</th><th>Guest 👤</th><th>User 🙋</th><th>Admin 🛡️</th></tr>
+    <tr><td>Browse Tools (Homepage)</td><td>✅</td><td>✅</td><td>✅</td></tr>
+    <tr><td>Search & Filter Tools</td><td>✅</td><td>✅</td><td>✅</td></tr>
+    <tr><td>View Tool Details</td><td>✅</td><td>✅</td><td>✅</td></tr>
+    <tr><td>Visit External Website Link</td><td>🔒 Login required</td><td>✅</td><td>✅</td></tr>
+    <tr><td>Submit New Tool</td><td>🔒</td><td>✅</td><td>✅</td></tr>
+    <tr><td>Add to Favourites</td><td>🔒</td><td>✅</td><td>❌</td></tr>
+    <tr><td>My Submissions</td><td>🔒</td><td>✅</td><td>❌</td></tr>
+    <tr><td>User Dashboard</td><td>🔒</td><td>✅</td><td>❌</td></tr>
+    <tr><td>Admin Dashboard</td><td>🔒</td><td>❌</td><td>✅</td></tr>
+    <tr><td>Approve / Reject Submissions</td><td>🔒</td><td>❌</td><td>✅</td></tr>
+    <tr><td>Manage All Tools (CRUD)</td><td>🔒</td><td>❌</td><td>✅</td></tr>
+    <tr><td>Manage Categories</td><td>🔒</td><td>❌</td><td>✅</td></tr>
+    <tr><td>Manage Users</td><td>🔒</td><td>❌</td><td>✅</td></tr>
+  </table>
+
+  <div class="info-box">
+    🔑 <strong>Authentication Flow:</strong> User logs in → Backend validates credentials → Returns JWT token 
+    → Frontend stores token in localStorage → Axios interceptor auto-attaches token to all subsequent API requests 
+    → Protected routes verified by <code>authMiddleware.js</code> on every request.
+  </div>
+
+  <!-- ══ 10. Frontend Pages ══ -->
+  <h1 class="section-title" style="margin-top:30px;">10. Frontend Pages</h1>
+  <table>
+    <tr><th>Page</th><th>Route</th><th>Access</th><th>Description</th></tr>
+    <tr><td>Home</td><td><code>/</code></td><td>Public</td><td>Hero section, search, featured tools, categories</td></tr>
+    <tr><td>Browse Tools</td><td><code>/tools</code></td><td>Public</td><td>All tools with search, filter, pagination</td></tr>
+    <tr><td>Tool Details</td><td><code>/tools/:id</code></td><td>Public</td><td>Full tool info, visit link, add to favourites</td></tr>
+    <tr><td>Login</td><td><code>/login</code></td><td>Guest only</td><td>JWT login form</td></tr>
+    <tr><td>Register</td><td><code>/register</code></td><td>Guest only</td><td>New user registration form</td></tr>
+    <tr><td>User Dashboard</td><td><code>/dashboard</code></td><td>User only</td><td>Stats: submissions, favourites</td></tr>
+    <tr><td>Submit Tool</td><td><code>/submit-tool</code></td><td>User only</td><td>Tool submission form</td></tr>
+    <tr><td>My Submissions</td><td><code>/my-submissions</code></td><td>User only</td><td>Track submission status</td></tr>
+    <tr><td>Favourites</td><td><code>/favourites</code></td><td>User only</td><td>Saved tools list</td></tr>
+    <tr><td>Profile</td><td><code>/profile</code></td><td>User only</td><td>Account info</td></tr>
+    <tr><td>Admin Dashboard</td><td><code>/admin/dashboard</code></td><td>Admin only</td><td>Stats and quick links</td></tr>
+    <tr><td>Admin Submissions</td><td><code>/admin/submissions</code></td><td>Admin only</td><td>Approve/reject pending tools</td></tr>
+    <tr><td>Admin Manage Tools</td><td><code>/admin/tools</code></td><td>Admin only</td><td>CRUD on all tools</td></tr>
+    <tr><td>Admin Add Tool</td><td><code>/admin/tools/add</code></td><td>Admin only</td><td>Add tool directly</td></tr>
+    <tr><td>Admin Categories</td><td><code>/admin/categories</code></td><td>Admin only</td><td>Category management</td></tr>
+    <tr><td>Admin Users</td><td><code>/admin/users</code></td><td>Admin only</td><td>View and toggle user status</td></tr>
+  </table>
+</div>
+
+<!-- ══════════════════ PAGE 7 ══════════════════ -->
+<div class="page page-break">
+
+  <!-- ══ 11. Deployment ══ -->
+  <h1 class="section-title">11. Deployment Details</h1>
+
+  <h2 class="sub-title">Frontend — Firebase Hosting</h2>
+  <table>
+    <tr><th>Property</th><th>Value</th></tr>
+    <tr><td>Platform</td><td>Google Firebase Hosting</td></tr>
+    <tr><td>Project ID</td><td>tools-aura-04</td></tr>
+    <tr><td>Live URL</td><td>https://tools-aura-04.web.app</td></tr>
+    <tr><td>Build Tool</td><td>Vite (output: frontend/dist/)</td></tr>
+    <tr><td>Deployment Command</td><td><code>npx firebase-tools deploy --only hosting</code></td></tr>
+    <tr><td>SPA Routing</td><td>All routes → index.html (configured in firebase.json)</td></tr>
+  </table>
+
+  <h2 class="sub-title">Backend — Railway.app</h2>
+  <table>
+    <tr><th>Property</th><th>Value</th></tr>
+    <tr><td>Platform</td><td>Railway.app</td></tr>
+    <tr><td>Service Name</td><td>tool-aura-backend</td></tr>
+    <tr><td>Live URL</td><td>https://tool-aura-backend-production.up.railway.app</td></tr>
+    <tr><td>Runtime</td><td>Node.js (auto-detected)</td></tr>
+    <tr><td>Start Command</td><td><code>node server.js</code></td></tr>
+    <tr><td>Deployment</td><td>Direct from local directory via Railway CLI</td></tr>
+  </table>
+
+  <h2 class="sub-title">Database — MongoDB Atlas</h2>
+  <table>
+    <tr><th>Property</th><th>Value</th></tr>
+    <tr><td>Platform</td><td>MongoDB Atlas (Free M0 Cluster)</td></tr>
+    <tr><td>Cluster Name</td><td>Cluster0</td></tr>
+    <tr><td>Region</td><td>AWS / Mumbai (ap-south-1)</td></tr>
+    <tr><td>MongoDB Version</td><td>8.0.17</td></tr>
+    <tr><td>Database Name</td><td>ai_tools_directory</td></tr>
+    <tr><td>Collections</td><td>users, tools, categories</td></tr>
+  </table>
+
+  <h2 class="sub-title">Environment Variables</h2>
+  <pre>
+# Backend (.env / Railway Variables)
+NODE_ENV=production
+MONGO_URI=mongodb+srv://user:pass@cluster0.dqkgxvo.mongodb.net/ai_tools_directory
+JWT_SECRET=your_secret_key
+JWT_EXPIRE=30d
+FRONTEND_URL=https://tools-aura-04.web.app
+
+# Frontend (.env.production)
+VITE_API_URL=https://tool-aura-backend-production.up.railway.app/api</pre>
+
+  <!-- ══ 12. Setup Guide ══ -->
+  <h1 class="section-title" style="margin-top:30px;">12. Local Setup & Installation Guide</h1>
+
+  <h3>Prerequisites</h3>
+  <div class="tech-grid">
+    <div class="tech-pill">🟩 Node.js v18+</div>
+    <div class="tech-pill">🍃 MongoDB (local or Atlas)</div>
+    <div class="tech-pill">📦 npm</div>
+  </div>
+
+  <h3>Step 1 — Clone / Download the Project</h3>
+  <pre>cd "c:\Users\NANDINI\OneDrive\Desktop\ai tools"</pre>
+
+  <h3>Step 2 — Install Backend Dependencies</h3>
+  <pre>cd backend
+npm install</pre>
+
+  <h3>Step 3 — Configure Backend Environment</h3>
+  <pre># backend/.env
+PORT=5000
+NODE_ENV=development
+MONGO_URI=mongodb://localhost:27017/ai_tools_directory
+JWT_SECRET=your_secret_key
+JWT_EXPIRE=30d
+FRONTEND_URL=http://localhost:5173</pre>
+
+  <h3>Step 4 — Seed the Database</h3>
+  <pre>node seeder.js
+# Output: ✅ Database seeded successfully!</pre>
+
+  <h3>Step 5 — Start the Backend</h3>
+  <pre>npm run dev
+# Server running on http://localhost:5000</pre>
+
+  <h3>Step 6 — Install Frontend Dependencies</h3>
+  <pre>cd ../frontend
+npm install</pre>
+
+  <h3>Step 7 — Start the Frontend</h3>
+  <pre>npm run dev
+# App running on http://localhost:5173</pre>
+</div>
+
+<!-- ══════════════════ PAGE 8 ══════════════════ -->
+<div class="page page-break">
+
+  <!-- ══ 13. Test Credentials ══ -->
+  <h1 class="section-title">13. Test Credentials</h1>
+  <div class="success-box">
+    <h3 style="margin-bottom:10px;">🛡️ Admin Account</h3>
+    <strong>Email:</strong> admin@aitools.com<br/>
+    <strong>Password:</strong> admin123<br/>
+    <strong>Access:</strong> Full admin dashboard, manage tools, users, categories, approve/reject submissions
+  </div>
+  <div class="info-box">
+    <h3 style="margin-bottom:10px;">👤 Regular User Account</h3>
+    <strong>Email:</strong> user@aitools.com<br/>
+    <strong>Password:</strong> user123<br/>
+    <strong>Access:</strong> Browse tools, submit tools, add to favourites, manage profile
+  </div>
+
+  <!-- ══ 14. Future Enhancements ══ -->
+  <h1 class="section-title" style="margin-top:30px;">14. Future Enhancements</h1>
+  <table>
+    <tr><th>#</th><th>Feature</th><th>Description</th></tr>
+    <tr><td>1</td><td>⭐ Ratings & Reviews</td><td>Users can rate tools (1–5 stars) and write text reviews</td></tr>
+    <tr><td>2</td><td>🏷️ Tags System</td><td>Multi-tag filtering for more precise tool discovery</td></tr>
+    <tr><td>3</td><td>📧 Email Notifications</td><td>Notify users when their submitted tool is approved/rejected</td></tr>
+    <tr><td>4</td><td>🔗 Social Login</td><td>Google OAuth / GitHub OAuth integration</td></tr>
+    <tr><td>5</td><td>📊 Analytics Dashboard</td><td>Track tool views, clicks, and user engagement metrics</td></tr>
+    <tr><td>6</td><td>🤖 AI Recommendations</td><td>Recommend tools based on user browsing history</td></tr>
+    <tr><td>7</td><td>🌙 Dark Mode</td><td>Toggle between light and dark themes</td></tr>
+    <tr><td>8</td><td>📱 PWA Support</td><td>Progressive Web App — installable on mobile devices</td></tr>
+    <tr><td>9</td><td>🔍 Elasticsearch</td><td>Full-text search with fuzzy matching and autocomplete</td></tr>
+    <tr><td>10</td><td>🌐 Multi-language</td><td>i18n support for regional language users</td></tr>
+  </table>
+
+  <!-- ══ 15. Conclusion ══ -->
+  <h1 class="section-title" style="margin-top:30px;">15. Conclusion</h1>
+  <p>
+    <strong>Tool Aura</strong> is a production-ready, full-stack web application that demonstrates 
+    a complete MERN stack development lifecycle — from requirement analysis and database design 
+    to frontend development, API integration, and cloud deployment.
+  </p>
+  <br/>
+  <p>
+    The project covers industry-standard practices including:
+  </p>
+  <ul style="margin: 12px 0 12px 24px;">
+    <li>JWT-based stateless authentication</li>
+    <li>Role-Based Access Control (RBAC)</li>
+    <li>RESTful API design with proper HTTP methods and status codes</li>
+    <li>Redux Toolkit for predictable frontend state management</li>
+    <li>MongoDB schema design with Mongoose ODM</li>
+    <li>Content moderation workflow (submit → review → approve/reject)</li>
+    <li>Environment-based configuration (dev/prod separation)</li>
+    <li>Cloud deployment with Firebase, Railway, and MongoDB Atlas</li>
+  </ul>
+  <br/>
+  <p>
+    This project serves as a strong demonstration of practical web development skills suitable 
+    for a B.Tech internship portfolio, covering both frontend and backend development with 
+    real-world deployment.
+  </p>
+
+  <div class="success-box" style="margin-top:24px;">
+    🎉 <strong>Live Application:</strong> <a href="https://tools-aura-04.web.app">https://tools-aura-04.web.app</a><br/>
+    ⚙️ <strong>API Health Check:</strong> <a href="https://tool-aura-backend-production.up.railway.app/api/health">https://tool-aura-backend-production.up.railway.app/api/health</a>
+  </div>
+
+  <div class="footer">
+    <p>Tool Aura — AI Tools Discovery Platform &nbsp;|&nbsp; Developed by Ajay A &nbsp;|&nbsp; November 2026</p>
+    <p style="margin-top:4px;">Built with MongoDB · Express.js · React.js · Node.js · Firebase · Railway</p>
+  </div>
+
+</div>
+</body>
+</html>
+
